@@ -8,59 +8,66 @@ interface LinkButtonProps {
 const LinkButton: React.FC<LinkButtonProps> = ({ item }) => {
   const isFeatured = item.is_featured;
 
-  // Base layout - Less rounded corners for a sharper, military/strategic look
-  const baseClasses = "group relative w-full p-6 sm:p-7 rounded-lg transition-all duration-300 flex flex-col justify-center items-start text-left cursor-pointer min-h-[100px] overflow-hidden border";
+  // Base layout: Ultra-compact, sharp edges, refined padding
+  const baseClasses = "group relative w-full p-3.5 sm:p-4 rounded-sm transition-all duration-500 flex flex-col justify-center items-start text-left cursor-pointer border overflow-hidden";
   
-  // Featured: The "Lead Magnet" - Gold, Attention Grabbing
+  // Featured: "Black Card" aesthetic - Dark with Gold Border & Text, rather than full Gold background (too flashy/cheap)
   const featuredClasses = `
-    bg-gradient-to-r from-gold-600 via-gold-400 to-gold-500
-    border-gold-300
-    shadow-[0_0_20px_-5px_rgba(212,175,55,0.4)]
-    hover:shadow-[0_0_30px_-5px_rgba(212,175,55,0.7)] hover:scale-[1.01]
+    bg-[#0A0A0A] 
+    border-[#C5A059]
+    shadow-[0_0_15px_-3px_rgba(197,160,89,0.15)]
+    hover:bg-[#111] hover:shadow-[0_0_20px_-5px_rgba(197,160,89,0.3)]
+    hover:border-[#E5C070]
   `;
   
-  // Standard: "Classified Intel" - Dark, Ghostly, High Contrast on hover
+  // Standard: Minimalist Ghost - Almost invisible until hovered
   const standardClasses = `
-    bg-navy-900/60 backdrop-blur-sm
-    border-slate-700
-    hover:border-gold-500/50 hover:bg-navy-800
+    bg-[#050505]/40 backdrop-blur-sm
+    border-[#1A1A1A]
+    hover:bg-[#0A0A0A] hover:border-[#333]
     hover:translate-x-1
   `;
 
   return (
     <a href={item.url} className={`${baseClasses} ${isFeatured ? featuredClasses : standardClasses}`}>
       
-      {/* Tech corner markers for standard buttons */}
-      {!isFeatured && (
-        <>
-          <span className="absolute top-0 right-0 w-3 h-3 border-t border-r border-slate-600 group-hover:border-gold-500 transition-colors"></span>
-          <span className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-slate-600 group-hover:border-gold-500 transition-colors"></span>
-        </>
+      {/* Featured Marker (Golden Strip on left) */}
+      {isFeatured && (
+        <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-[#8A6D15] via-[#E5C070] to-[#8A6D15]"></div>
       )}
 
-      <div className="relative z-10 w-full flex flex-col gap-2">
-        {/* Title: BIG, BOLD, UPPERCASE */}
-        <span className={`block uppercase font-black tracking-wider leading-none ${
-          isFeatured 
-            ? 'text-navy-950 text-xl sm:text-2xl font-serif' 
-            : 'text-gray-100 text-lg sm:text-xl group-hover:text-gold-300 transition-colors'
-        }`}>
-          {isFeatured && <span className="mr-3">⚡</span>}
-          {item.title}
-        </span>
+      {/* Standard Tech Accents - Minimal */}
+      {!isFeatured && (
+        <span className="absolute top-1/2 right-3 w-1 h-1 bg-slate-800 rounded-full group-hover:bg-[#C5A059] transition-colors duration-300"></span>
+      )}
 
-        {/* Subtitle: Thin, Italic, Short */}
+      <div className="relative z-10 w-full pl-2 flex flex-col gap-0.5">
+        {/* Title: EB Garamond, Sophisticated size, not too big */}
+        <div className="flex items-center">
+            {isFeatured && <span className="text-[#C5A059] text-[10px] mr-2 tracking-widest uppercase font-sans font-bold">VIP</span>}
+            <span className={`block font-serif font-bold uppercase tracking-wider leading-tight ${
+            isFeatured 
+                ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#F9F1D8] via-[#E5C070] to-[#B08D1E] text-base sm:text-lg' 
+                : 'text-slate-300 text-sm sm:text-base group-hover:text-white transition-colors'
+            }`}>
+            {item.title}
+            </span>
+        </div>
+
+        {/* Subtitle: Manrope, Extremely minimal and clean */}
         {item.subtitle && (
-          <span className={`block text-xs sm:text-sm font-light italic tracking-wide ${
-            isFeatured ? 'text-navy-900/80' : 'text-slate-400 group-hover:text-slate-300'
+          <span className={`block text-[10px] sm:text-[11px] font-sans font-normal tracking-[0.05em] ${
+            isFeatured ? 'text-[#C5A059]/80 italic' : 'text-slate-500 group-hover:text-slate-400 italic'
           }`}>
             {item.subtitle}
           </span>
         )}
       </div>
 
-      {/* Hover glint effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out pointer-events-none"></div>
+      {/* Subtle Scanline/Shine for Featured */}
+      {isFeatured && (
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#E5C070]/5 to-transparent -translate-x-[200%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out pointer-events-none"></div>
+      )}
     </a>
   );
 };
